@@ -1,0 +1,168 @@
+\documentclass{oxmathproblems}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\course{Algorithm Design and Analysis}
+\sheettitle{Assignment 4 \\ Wu Jiabao, 523030910241}
+
+\begin{document}
+\begin{questions}
+\miquestion Construct $f(i,j)$: the function returns a bool value to show whether $C[1:i+j]$ is a shuffle of $A[1:i]$ and $B[1:j]$. 
+$$f(i,j)=f(i-1,j)_{A[i]=C[i+j]}\lor f(i,j-1)_{B[j]=C[i+j]}\lor false_{A[i]\neq C[i+j]\land B[j]\neq C[i+j]}$$
+
+\begin{algorithm}[h!]
+\caption{Determine whether $C$ is a shuffle of $A$ and $B$}
+\textbf{Input:} strings $A,\ B,\ C$\\
+\textbf{Output:} Whether $C$ is a shuffle of $A$ and $B$.
+\begin{algorithmic}[1]
+    \State $f(0,0)\gets true$\;
+    \State \textbf{for} $i$ from $1$ to $n$:\;
+    \State \hspace{0.5cm} \textbf{for} $j$ from $1$ to $m$:\;
+    \State \hspace{1cm} $f(i,j)\gets f(i-1,j)_{A[i]=C[i+j]}\lor f(i,j-1)_{B[j]=C[i+j]}\lor false_{A[i]\neq C[i+j]\land B[j]\neq C[i+j]}$\;
+    \State \textbf{return} $f(n,m)$\;
+\end{algorithmic}
+\end{algorithm}
+Its time complexity is $O(nm)$.
+
+\miquestion
+\begin{parts}
+\part Construct $f(x,y)$: the maximal profit players get from $(1,1)$ to $(x,y)$. 
+$$f(x,y)=\max\{f(x-1,y)+v(x,y)-1,\ f(x,y-1)+v(x,y)-1\}$$
+
+\begin{algorithm}
+\caption{Maximize the player's profit}
+\textbf{Input: } $n$ gifts $(x_i,y_i)$, $m$\\
+\textbf{Output: } the maximum profit.
+\begin{algorithmic}[1]
+    \State $v(x,y)\gets 0$ if gifts are not on $(x,y)$\;
+    \State $v(x_i,y_i)\gets v_i$\;
+    \State $f(1,1)\gets 0$, $f(i,0)=f(0,j)\gets-\infty$\;
+    \State \textbf{for} $i$ from $1$ to $m$:
+    \State \hspace{0.5cm} \textbf{for} $j$ from $1$ to $m$:
+    \State \hspace{1cm} $f(i,j)\gets\max\{f(i-1,j)+v(i,j)-1,\ f(i,j-1)+v(i,j)-1\}$\;
+    \State \textbf{return} $\max\{f(i,j)\}$.
+\end{algorithmic}
+\end{algorithm}
+\hspace{-1cm}\textbf{Prove of correctness:} Assume we move further than $1$ cost from $(a,b)$ to $(c,d)$. 
+Then the cost will be greater than $(c-a)+(d-b)$, which is the cost of going step by step. 
+Since we can only receive $v_{(c,d)}$ rather than all gifts along the way from $(a,b)$ to $(c,d)$, going step by step is an optimal choice.\\
+There are many ways to go to $(i,j)$ from $(1,1)$ step by step, and $\max\{f(i,j)\}$ selects the one with maximal profit.
+
+\newpage
+\part Construct $f(i)$: the maximal profit we can get from the first i gifts.
+$$f(i)=\max\{f(i),\left(f(j)+v_i-(x_i-x_j)-(y_i-y_j)\right)_{x_j\le x_i\land y_j\le y_j}\},\ j=1,\cdots,i-1$$
+
+\begin{algorithm}
+\caption{Maximize the player's profit}
+\textbf{Input:} $n$ gifts $(x_i,y_i)$, $m$\\
+\textbf{Output:} the maximum profit.
+\begin{algorithmic}[1]
+    \State \textbf{for} $i$ from $1$ to $n$:\;
+    \State \hspace{0.5cm} $f(i)\gets v_i-x_i-y_i+2$\;
+    \State \textbf{for} $i$ from $1$ to $n$:\;
+    \State \hspace{0.5cm} \textbf{for} $j$ from $1$ to $i-1$:\;
+    \State \hspace{1cm} $f(i)=\max\{f(i),\left(f(j)+v_i-(x_i-x_j)-(y_i-y_j)\right)_{x_j\le x_i\land y_j\le y_j}\}$\;
+    \State \textbf{return} $\max\{f(i)\}$
+\end{algorithmic}
+\end{algorithm}
+\hspace{-1cm}\textbf{Prove of correctness:} Assume we always have the maximal profit during $i-1$-th iteration. 
+Suppose in $i$-th iteration, if $(x_j,y_j)$ is in the $Upper-left$ or $Lower-right$ of $(x_i,y_i)$, $f(j)$ will keep its value; 
+If it is in the $Lower-left$ of $(x_i,y_i)$, assume $f(i)< f_{OPT}(i)$. Then we know that $(x_j,y_j)$ causes the update of $f_{OPT}(i)$. 
+Since we cannot go from $(x_i,y_i)$ to $(x_j,y_j)$, $f_{OPT}(j)$ is still maximal. Thus: $$f_{OPT}(i)=\max\{f(i),\left(f(j)+v_i-(x_i-x_j)-(y_i-y_j)\right)\}$$
+Thus it causes a contradiction. The algorithm always finds the maximal profit of $(x_i,y_i)$.
+
+\part I guess the answer is false. It is difficult enough to solve $Upper-right$ problem in polynomial-time.
+\end{parts}
+
+\miquestion
+\begin{parts}
+\part Construct $f(i,j)$: whether there is a subset $S=\{a_1,\cdots,a_i\}$ with sum exactly $j$.
+\begin{algorithm}
+    \caption{Determine the subset}
+    \textbf{Input:} $T$, $k$\\
+    \textbf{Output:} whether there is a subset $S=\{a_1,\cdots,a_i\}$ with sum exactly $j$.
+    \begin{algorithmic}[1]
+        \State $f(0,j)\gets false$ for all $j=1,\cdots, k$\;
+        \State $f(0,0)\gets true$\;
+        \State \textbf{for} i from $1$ to $n$:
+        \State \hspace{0.5cm} \textbf{for} j from $1$ to $k$:
+        \State \hspace{1cm} $f(i,j)\gets f(i-1,j)\lor (f(i-1,j-a_i)\land (j\ge a_i))$
+        \State \textbf{return} $f(n,k)$
+\end{algorithmic}
+\end{algorithm}
+
+Its time complexity is $O(kn)$.
+
+\part Construct $a_i'=\lfloor\frac{a_i}{K}\rfloor$ for all $a_i$, $k'=\lfloor\frac{k}{K}\rfloor$, where $K\in\mathbb{N}$ is big enough.\\
+Then we employ the algorithm in (a) again and we receive an approximate solution $S'$. 
+\par
+\textbf{Prove of correctness:} Suppose there is a subset $S$ such that $\sum_{a_i\in S}a_i=k$. Then we have:
+$$k'-n\le\sum_{a_i\in S}(\frac{a_i}{K}-1)\le\sum_{a_i\in S}a_i'\le\sum_{a_i\in S}\frac{a_i}{K}\le k'+1$$
+Thus $\sum_{a_i'\in S'}a_i'\in[k'-n,k'+1]$.
+$$k-(n+1)K\le K(k'-n)\le\sum_{a_i'\in S'}a_i\le\sum_{a_i'\in S'}Ka_i'+nK\le k+(n+1)K$$
+Hence let $\epsilon=\frac{(n+1)K}{k}$, we have $\sum_{a_i'\in S'}a_i\in[(1-\epsilon)k,(1+\epsilon)k]$.
+\par
+\textbf{Time complexity:} $O(n\cdot \frac{k}{K})=O(\frac{n^2}{\epsilon})$.
+\end{parts}
+
+\newpage
+\miquestion
+\begin{parts}
+\part Construct $f(v,true)$: the number of independent sets including $v$ in the subtree of $v$.\\
+$f(v,false)$: the number of independent sets not including $v$ in the subtree of $v$.
+$$f(v,true)=\prod_{u\in children(v)}f(u,false)$$
+$$f(v,false)=\prod_{u\in children(v)}(f(u,false)+f(u,true))$$
+\begin{algorithm}
+    \caption{Find the number of independent sets in $G$}
+    \textbf{Input:} $G$, $n$\\
+    \textbf{Output:} the number of independent sets in $G$
+    \begin{algorithmic}[1]
+        \State $f(u,false)\gets 1,\ f(u,true)\gets 1$ for all $u$ is a leaf.\;
+        \State \textbf{for} all internal vertice $v$ in level order:\;
+        \State \hspace{0.5cm} $f(v,true)\gets\prod_{u\in children(v)}f(u,false)$\;
+        \State \hspace{0.5cm} $f(v,false)\gets\prod_{u\in children(v)}(f(u,false)+f(u,true))$\;
+        \State \textbf{return} $f(r,true)+f(r,false)$ where $r$ is the root of $G$.
+\end{algorithmic}
+\end{algorithm}
+
+\hspace{-1cm}\textbf{Prove of correctness:} For the leaves the number of independent sets is $2$.\\
+Assume after $i-1$-th iteration all vertice with $i-1$ distance from leaves have got the number of independent sets.\\
+In $i$-th iteration, choose a leaf's $i$-th ancestor $u$. Since the subtrees rooted in its children are independent, 
+we only need to condier whether choose $u$ or not. If $u$ is selected, all its children are not. Otherwise its children can be selected or not.\\
+
+\par\hspace{-1cm}\textbf{Time complexity:} Since each vertex $v$ is processed once and each $f(u,true)$ and $(u,false)$ is looked up for once: from its parent. 
+The overall complexity is $O(n)$.
+
+\newpage
+\part Construct $f(v,true)$: size of maximum independent sets in $subtree(v)$ including $v$.\\
+$f(v,false)$: size of maximum independent sets in $subtree(v)$ not including $v$.\\
+$g(v,true)$: number of maximum independent sets in $subtree(v)$ including $v$.\\
+$g(v,false)$: number of maximum independent sets in $subtree(v)$ not including $v$.
+
+\begin{algorithm}
+    \caption{Find the number of maximum independent sets in $G$}
+    \textbf{Input:} $G$, $n$\\
+    \textbf{Output:} the number of independent sets in $G$
+    \begin{algorithmic}[1]
+        \State $f(u,false)\gets 0,\ f(u,true)\gets 1$ for all $u$ is a leaf.\;
+        \State $g(u,false)\gets 1,\ g(u,true)\gets 1$ for all $u$ is a leaf.\;
+        \State \textbf{for} all internal vertice $v$ in descending-level-order:\;
+        \State \hspace{0.5cm} $f(v,true)\gets 1+\sum_{u\in children(v)}f(u,false)$\;
+        \State \hspace{0.5cm} $f(v,false)\gets\sum_{u\in children(v)}\max\{f(u,true),f(u,false)\}$\;
+        \State \hspace{0.5cm} $g(v,true)\gets\prod_{u\in children(v)}g(u,false)$
+        \State \hspace{0.5cm} $g(v,false)\gets\prod_{u\in children(v)}\begin{cases}
+            g(u,false) & f(u,false)>f(u,true)\\
+            g(u,false)+g(u,true) & f(u,false)=f(u,true)\\
+            g(u,true) & f(u,false)<f(u,true)
+        \end{cases}$
+        \State \textbf{return} $g(r,true)+g(r,false)$ where $r$ is the root of $G$.
+\end{algorithmic}
+\end{algorithm}
+\hspace{-1cm}\textbf{Prove of correctness:} If $v$ is in the maximum independent set, its children must not be chosen. If $v$ is not, we should consider its child.\\
+Since we need to maximize the size of independent set, we should always choose vertice with maximal $f$.
+\par\hspace{-1cm}\textbf{Time complexity:} $O(n)$ since all vertice are visited only once.
+\end{parts}
+
+\miquestion It takes me 12 hours to finish it. Difficulty is 4. Collaborators: Li Haochen, Wang Kun.
+\end{questions}
+\end{document}

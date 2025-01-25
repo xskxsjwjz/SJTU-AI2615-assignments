@@ -1,0 +1,44 @@
+\documentclass{oxmathproblems}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\course{Algorithm Design and Analysis}
+\sheettitle{Assignment 6 \\ Wu Jiabao, 523030910241} %can leave out if no title per sheet
+
+\begin{document}
+\begin{questions}
+\setcounter{question}{2}
+
+\miquestion
+Given a \emph{dominating set problem} instance $(G=(V,E),D\subset V)$, we iterate each vertex in $V$ to check whether it is incident with a vertex in $D$. It takes $O(|V|(|V|+|E|))$ time, so the \emph{dominating set problem} is in NP.
+
+Considering a VertexCover instance $(G=(V,E),k)$. For each edge $e=(u,v)$ in $V$, we construct a vertex $x_e$ and link it to $u$ and $v$, resulting a new graph $G'=(V',E')$. Let $k=k$ and $(G'=(V',E'),k)$ is a \emph{dominating set problem} instance.
+
+If VertexCover has a yes instance, for each edge $e\in E$, it has at least one endpoint in the cover set $C$. Thus for the corresponding $u,v,x_e\in V'$, we have $u\in C\lor v\in C$. Thus $u,v,x_e$ must be dominated. Therefore, the \emph{dominating set problem} has a yes instance.
+
+If the \emph{dominating set problem} has a yes instance, for any vertex $x$ in the dominating set $D$, if $x\notin V$, remove $x$ and add its adjacent vertex into $D$. 
+Since $x$ is only incident to its endpoints in $G$ in this case, the operation before will keep $D$ still a dominating set. After the operation $D$ only contains vertices in $V$. 
+Since $D$ is dominating set and all vertices in $V\setminus D$ are dominated, we have all edges are covered. Thus the VertexCover problem is a yes instance.
+
+Therefore, we have VertexCover $\le_k$ \emph{dominating set problem}, \emph{dominating set problem} is NP-complete.
+
+\miquestion
+Firstly we prove the \emph{set cover problem} is NP-hard. Consider a VertexCover instance $(G=(V,E),k)$. We will construct a SetCover instance $(U,\mathcal{T},k)$. 
+Label the edges in $E$ with $1,2,\dots,|E|$ in arbitraty order. Construct a ground set $U=E$. For each $v_i\in V$, construct a subset $S_i=\{e\in E\mid v_i \hbox{ is an endpoint of } e\}$. Let $k=k$.\\
+Thus we get a VertexCover instance $(U,\mathcal{T},k)$. Obviously the conversion is under polynomial time. Denote the set of chosen subsets as $A$.
+
+Picking $S_i\in A$ represents picking $v_i$ in the vertex cover.\\
+If the VertexCover has a yes instance, for any edge $e$ in $E$, it has at least one endpoint chosen. Thus $e\in\bigcup_{i=1}^k A_i$ for all $e\in E$, which gives the \emph{set cover problem} a yes instance.\\
+If the \emph{set cover problem} has a yes instance, we can select $k$ subsets from $\mathcal{T}$ to cover $E$. Thus we can pick $k$ vertices to make all the edges have at least one endpoint selected.\\
+Thus we have VertexCover $\le_k$ SetCover, \emph{set cover problem} is NP-hard.
+
+Then we prove the \emph{max-k-coverage problem} is also NP-hard. The construction is the same as above.\\
+If the VertexCover has a yes instance, we can select $k$ subsets to make $\bigcup_{i=1}^k A_i=E$. Since $|E|$ is the maximum size of coverage, the \emph{max-k-coverage problem} also gives a yes instance.\\
+If the \emph{max-k-coverage problem} has a yes instance, we can find $k$ vertices to cover the maximum amount of edges, which is $|E|$. Thus the VertexCover has a yes instance.\\
+Thus we have VertexCover $\le_k$ \emph{max-k-coverage problem}, \emph{max-k-coverage problem} is NP-hard.
+
+\miquestion
+The homework takes me 3 hours. Collaborators: Wang Kun, Li Haochen.
+\end{questions}
+
+\end{document}

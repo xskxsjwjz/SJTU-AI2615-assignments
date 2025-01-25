@@ -1,0 +1,48 @@
+%Example of use of oxmathproblems latex class for problem sheets
+\documentclass{oxmathproblems}
+
+%(un)comment this line to enable/disable output of any solutions in the file
+%\printanswers
+
+%define the page header/title info
+\course{Algorithm Design and Analysis}
+\sheettitle{Assignment 2 \\ Deadline: Nov 5, 2024} %can leave out if no title per sheet
+
+
+\begin{document}
+
+\begin{questions}
+\miquestion[25]
+Given a direct graph $G=(V,E)$ and two vertices $s,t\in V$, design a polynomial-time algorithm to decide if we can go from $s$ to $t$ such that each vertex is visited at least once.
+Prove that your algorithm is correct, and analyze its running time.
+
+
+\miquestion[25]
+Given an undirected connected graph $G=(V,E)$ and a vertex $s$, prove that the DFS and BFS trees rooted at $s$ are identical if and only if $G$ is a tree.
+
+\miquestion[25]
+It is possible that the shortest path from $s$ to $t$ in an edge-weighted graph is not unique.
+Given a directed edge-weighted graph $G=(V,E,w)$ with positive edge weights and $s\in V$, design an $O((|V|+|E|)\log|V|)$ time algorithm to output a Boolean array $B$, with vertices being the array indices, such that $B[u]=\texttt{true}$ if the shortest path from $s$ to $u$ is unique and $B[u]=\texttt{false}$ otherwise.
+You can assume that every vertex $u\in V$ is reachable from $s$.
+Prove the correctness of your algorithm.
+
+\miquestion[25]
+Consider a directed \emph{acyclic} edge-weighted graph $G=(V,E,w)$ where edge weights can be negative and a vertex $s\in V$. 
+\begin{parts}
+\part[20] Adapt the Bellman-Ford algorithm to find the distances of all vertices from $s$.
+Your algorithm must run in $O(|V|+|E|)$ time.
+Prove the correctness of your algorithm and analyze its time complexity.
+\part[5] Suppose now we want to find the length of the longest path from $s$ to each vertex $u\in V$ (the length is measured by the sum of the weights of the edges on the path, not by the number of the edges). Can we negate the weight of every edge and use the algorithm from the first part? If so, prove it; if not, provide a counterexample.
+\end{parts}
+  
+\miquestion
+How long does it take you to finish the assignment (including thinking and discussion)?
+Give a score (1,2,3,4,5) to the difficulty.
+Do you have any collaborators?
+Please write down their names here.
+ 
+
+\end{questions}
+
+
+\end{document}

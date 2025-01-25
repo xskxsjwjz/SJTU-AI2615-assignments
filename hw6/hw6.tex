@@ -1,0 +1,57 @@
+%Example of use of oxmathproblems latex class for problem sheets
+\documentclass{oxmathproblems}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%(un)comment this line to enable/disable output of any solutions in the file
+%\printanswers
+
+%define the page header/title info
+\course{Algorithm Design and Analysis}
+\sheettitle{Assignment 6 \\ Deadline: Jan 15, 2025} %can leave out if no title per sheet
+
+
+\begin{document}
+
+Choose two of the four questions.
+
+\begin{questions}
+
+\miquestion[50] 
+Given an undirected graph $G=(V,E)$ and an integer $k$, decide if $G$ has a spanning tree with maximum degree at most $k$. 
+\begin{parts}
+    \part Prove that this problem is NP-complete.
+    \part Prove that this problem is NP-complete for $k=3$. (Notice that, in the first part, an instance of this problem is $(G,k)$ which consists of both the graph $G$ and the parameter $k$; in this part, $k$ becomes a fixed constant, and an instance of this problem is just a graph $G$.)
+\end{parts}
+
+\miquestion[50]
+Let's reconsider problem 2(b) in our midterm exam, but now with a \emph{directed} and \emph{weighted} graph.
+That is, the inputs include a directed weighted graph $G=(V,E,w)$ where edges have non-negative \emph{integer} weights, two vertices $s,t\in V$, and a non-negative integer $k$. You are to decide if there is an $s$-$t$ path with a length of exactly $k$. Again, in this question, a path can visit a vertex more than once.
+\begin{parts}
+    \part Prove that this problem is NP-complete.
+    \part (Not for credit, just for fun) Does this problem still NP-complete for undirected (but still positively weighted) graphs?
+\end{parts}
+
+\miquestion[50]
+In Lecture 8, we have seen that the K-Centers problem does not admit a polynomial-time $(2-\varepsilon)$-approximation for any $\varepsilon>0$, unless $\text{P}=\text{NP}$, and we have proved this by a reduction from the \emph{dominating set problem}.
+We have mentioned that the dominating set problem is NP-complete.
+Now it's your turn to prove it!
+
+Recall that, given an undirected graph $G=(V,E)$, a dominating set $S\subseteq V$ is a set of vertices such that each $u\in V$ is either in $S$ or has a neighbor in $S$. The dominating set problem takes a graph $G=(V,E)$ and a positive integer $k$ as inputs, and asks if $G$ contains a dominating set with size $k$.
+
+
+\miquestion[50]
+Given a ground set $U=\{1,\ldots,n\}$ and a collection  $\mathcal{T}=\{S_1,\ldots,S_m\}$ of subsets of $U$ such that $\bigcup_{i=1}^mS_i=U$, the \emph{set cover problem} asks for a minimum number of subsets from $\mathcal{T}$ whose union is $U$, and the \emph{max-k-coverage problem} asks for $k$ subsets from $\mathcal{T}$ with the maximum union size.
+Prove that both problems are NP-hard.
+  
+\miquestion
+How long does it take you to finish the assignment (including thinking and discussion)?
+Give a score (1,2,3,4,5) to the difficulty.
+Do you have any collaborators?
+Please write down their names here.
+ 
+
+\end{questions}
+
+
+\end{document}

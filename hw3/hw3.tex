@@ -1,0 +1,83 @@
+%Example of use of oxmathproblems latex class for problem sheets
+\documentclass{oxmathproblems}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%(un)comment this line to enable/disable output of any solutions in the file
+%\printanswers
+
+%define the page header/title info
+\course{Algorithm Design and Analysis}
+\sheettitle{Assignment 3 \\ Deadline: Nov 25, 2024} %can leave out if no title per sheet
+
+
+\begin{document}
+
+\begin{questions}
+\miquestion[35]
+In the class, we learned Kruskal's algorithm to find a minimum spanning tree (MST). The strategy is simple and intuitive: pick the best legal edge in each step. The philosophy here is that local optimal choices will yield a global optimal. In this problem, we will try to understand to what extent this simple strategy works. To this end, we study a more abstract algorithmic problem of which MST is a special case.
+
+Consider a pair $M=(U,\mathcal{I})$ where $U$ is a finite set and $\mathcal{I}\subseteq \{0,1\}^U$ is a collection of subsets of $U$. We say $M$ is a \emph{matroid} if it satisfies
+\begin{itemize}
+    \item (\textbf{hereditary property}) $\mathcal{I}$ is nonempty and for every $A\in\mathcal{I}$ and $B\subseteq A$, it holds that $B\in\mathcal{I}$.
+    \item (\textbf{exchange property}) For any $A,B\in\mathcal{I}$ with $|A|<|B|$, there exists some $x\in B\setminus A$ such that $A\cup\{x\}\in\mathcal{I}$.
+\end{itemize}
+Each set $A\in\mathcal{I}$ is called an \emph{independent set}.
+
+\begin{parts}
+    \part[7] Let $M=(U,\mathcal{I})$ be a matroid. Prove that maximal independent sets are of the same size. (A set $A\in\mathcal{I}$ is \emph{maximal} if there is \emph{no} $B\in\mathcal{I}$ such that $A\subsetneq B$.)
+    \part[7] Let $G=(V,E)$ be a simple undirected graph. Let $M=(E,\mathcal{S})$ where $\mathcal{S}=\{F\subseteq E\mid F\mbox{ does not contain a cycle}\}$. Prove that $M$ is a matroid. What are the maximal sets of this matroid?
+    \part[7] Let $M=(U,\mathcal{I})$ be a matroid. We associate each element $x\in U$ with a nonnegative weight $w(x)$. For every set of elements $S\subseteq U$, the weight of $S$ is defined as $w(S)=\sum_{x\in S}w(x)$. Now we want to find a maximal independent set with maximum weight. Consider the following greedy algorithm.
+    
+\begin{algorithm}[h!]
+\caption{Find a maximal independent set with maximum weight}
+\label{alg}
+\textbf{Input: }A matroid $M=(U,\mathcal{I})$ and a weight function $w:U\to\mathbb{R}_{\ge 0}$.\\
+\textbf{Output: }A maximal independent set $S\in\mathcal{I}$ with maximum $w(S)$.
+\begin{algorithmic}[1]
+   \State $S\gets\emptyset$\;
+   \State Sort $U$ into decreasing order by weight $w$\;
+   \State \textbf{for} $x\in U$ in decreasing order of $w$:
+   \State \hspace{0.5cm} \textbf{if} $S\cup\{x\}\in \mathcal{I}$:
+   \State \hspace{1cm} $S\gets S\cup\{x\}$\;
+   \State \hspace{0.5cm} \textbf{endif}
+   \State \textbf{endfor}
+   \State \textbf{return} $S$\;
+\end{algorithmic}
+\end{algorithm}
+
+ Now we consider the first element $x$ the algorithm added to $S$.  Prove that there must be a maximal independent set $S'\in \mathcal{I}$ with maximum weight containing $x$. 
+
+\part[7] Prove that the greedy algorithm returns a maximal independent set with maximum weight. 
+(Hint: Can you see that Algorithm~\ref{alg} is just a generalization of Kruskal's algorithm?)
+
+\part[7] Let $U\subseteq \mathbb{R}^n$ be a finite collection of $n$-dimensional vectors. Assume $m=|U|$ and we associate each vector $\mathbf{x}\in U$ a positive weight $w(\mathbf{x})$. For any set of vectors $S\subseteq U$, the weight of $S$ is defined as $w(S)=\sum_{\mathbf{x}\in S}w(\mathbf{x})$. Design an efficient algorithm to find a set of vectors $S\subseteq U$ with maximum weight and all vectors in $S$ are linearly independent.
+
+\end{parts}
+
+\miquestion[30]
+Given a constant $k\in\mathbb{Z}^+$, we say that a vertex $u$ in an undirected graph \emph{covers} a vertex $v$ if the distance between $u$ and $v$ is at most $k$. In particular, a vertex $u$ covers all those vertices that are within distance $k$ from $u$, including $u$ itself. Given an undirected \emph{tree} $G=(V,E)$ and the parameter $k$, consider the problem of finding a minimum-size subset of vertices that covers all the vertices in $G$.
+Design a polynomial time algorithm for this problem. Prove the correctness of your algorithm and analyze its running time.
+
+You will receive 20 points if you can solve the problem for $k=1$.
+
+\miquestion[35]
+Given a graph $G=(V,E)$ and a subset of vertices $S\subseteq V$, let $\sigma(S)$ be the number of vertices that are reachable from $S$. Consider the maximum reachability problem: given a graph $G=(V,E)$ and a positive integer $k\in\mathbb{Z}^+$ as inputs, find $S\subseteq V$ with $|S|\leq k$ that maximizes $\sigma(S)$.
+\begin{parts}
+    \part[10] Design a polynomial time algorithm for this problem if the input graph $G$ is undirected.
+    \part[15] Design a polynomial time $(1-1/e)$-approximation algorithm for this problem when the input graph can be directed. You need to prove that your algorithm indeed achieves a $(1-1/e)$-approximation.
+    \part[10] We have mentioned in the class that the max-k-coverage problem is NP-hard and we do not believe there is a polynomial time algorithm for it. Prove that the maximum reachability problem with the directed graph setting in part (b) is also NP-hard by proving that the max-k-coverage problem can be viewed as a special case of the maximum reachability problem.
+\end{parts}
+
+  
+\miquestion
+How long does it take you to finish the assignment (including thinking and discussion)?
+Give a score (1,2,3,4,5) to the difficulty.
+Do you have any collaborators?
+Please write down their names here.
+ 
+
+\end{questions}
+
+
+\end{document}
